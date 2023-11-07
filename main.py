@@ -1,5 +1,5 @@
 import pygame
-from constants import SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED
+from constants import SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED
 from character import Character
 
 pygame.init()
@@ -21,7 +21,18 @@ moving_right = False
 moving_up = False
 moving_down = False
 
+# helper func tow scale image
+
+def scale_img(image, scale):
+    w = image.get_width()
+    h = image.get_height()
+    return pygame.transform.scale(image, (w*scale, h*scale))
+ 
+
+
+
 player_image = pygame.image.load("assets/images/characters/elf/idle/0.png").convert_alpha()
+player_image = scale_img(player_image, SCALE)
 
 # create player
 player = Character(100,100, player_image)
