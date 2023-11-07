@@ -1,3 +1,4 @@
+"""Constants to be used in the game"""
 FPS = 60
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600

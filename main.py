@@ -1,3 +1,4 @@
+"""Main Module where the game is initialized and run"""
 import pygame
 from constants import SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED
 from character import Character

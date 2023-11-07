@@ -1,3 +1,4 @@
+"""Character class and assorted methods"""
 import math
 import pygame
 from constants import RED
