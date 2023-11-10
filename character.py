@@ -1,7 +1,7 @@
 """Character class and assorted methods"""
 import math
 import pygame
-from constants import RED
+from constants import OFFSET, RED, SCALE
 
 class Character():
     """
@@ -64,14 +64,15 @@ class Character():
         -------
         None
         """
-    def __init__(self,x, y, animation_list ):
+    def __init__(self,x, y, mob_animations, char_type):
+        self.char_type = char_type
         self.flip = False
-        self.animation_list = animation_list
+        self.animation_list = mob_animations[char_type]
         self.frame_index = 0
         self.action = 0 #0: idle, 1:run
         self.update_time = pygame.time.get_ticks()
         self.running = False
-        self.image = animation_list[self.frame_index]
+        self.image = self.animation_list[self.action][self.frame_index]
         self.rect = pygame.Rect(0,0,40,40)
         self.rect.center = (x,y)
     
@@ -213,6 +214,10 @@ class Character():
     None
     """
         flipped_image = pygame.transform.flip(self.image,self.flip, False)
-        surface.blit(flipped_image, self.rect)
+        if self.char_type == 0:
+            surface.blit(flipped_image, (self.rect.x, self.rect.y -  SCALE * OFFSET))
+        
+        else:
+            surface.blit(flipped_image, self.rect)
         pygame.draw.rect(surface,RED, self.rect, 1)
     

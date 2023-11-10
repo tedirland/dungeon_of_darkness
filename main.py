@@ -1,7 +1,8 @@
 """Main Module where the game is initialized and run"""
 import pygame
-from constants import SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED
+from constants import SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, WEAPON_SCALE
 from character import Character
+from weapon import Weapon
 
 pygame.init()
 
@@ -27,22 +28,36 @@ def scale_img(image, scale):
     w = image.get_width()
     h = image.get_height()
     return pygame.transform.scale(image, (w*scale, h*scale))
+
+# load weapon images
+bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
+
+# load character images
+mob_animations = []
+mob_types = ["elf", "imp", "skeleton", "goblin", "muddy", "tiny_zombie", "big_demon"]
+
  
 animation_types = ["idle","run"]
-animation_list = []
 
-for animation in animation_types:
-    # reset temp list of images
-    temp_list = []
-    for i in range(4):
-        img = pygame.image.load(f"assets/images/characters/elf/{animation}/{i}.png").convert_alpha()
-        img = scale_img(img, SCALE)
-        temp_list.append(img)
-    animation_list.append(temp_list)
-print(animation_list)
+for mob in mob_types:
+    animation_list = []
+    for animation in animation_types:
+        # reset temp list of images
+        temp_list = []
+        for i in range(4):
+            img = pygame.image.load(f"assets/images/characters/{mob}/{animation}/{i}.png").convert_alpha()
+            img = scale_img(img, SCALE)
+            temp_list.append(img)
+        animation_list.append(temp_list)
+    mob_animations.append(animation_list)
+
 
 # create player
-player = Character(100,100, animation_list)
+player = Character(100,100, mob_animations, 0)
+
+# create weapon
+
+bow = Weapon(bow_image)
 
 
 # main game loop
@@ -70,10 +85,11 @@ while run:
     player.move(dx,dy)
 
     # update player
-
     player.update()
+    bow.update(player)
     
     player.draw(screen)
+    bow.draw(screen)
     #event handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
