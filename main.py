@@ -31,6 +31,8 @@ def scale_img(image, scale):
 
 # load weapon images
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
+arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), WEAPON_SCALE)
+
 
 # load character images
 mob_animations = []
@@ -56,8 +58,10 @@ for mob in mob_types:
 player = Character(100,100, mob_animations, 0)
 
 # create weapon
+bow = Weapon(bow_image, arrow_image)
 
-bow = Weapon(bow_image)
+# create sprite groups
+arrow_group = pygame.sprite.Group()
 
 
 # main game loop
@@ -86,10 +90,17 @@ while run:
 
     # update player
     player.update()
-    bow.update(player)
+    arrow = bow.update(player)
+    if arrow:
+        arrow_group.add(arrow)
+    for arrow in arrow_group: 
+        arrow.update()
     
     player.draw(screen)
     bow.draw(screen)
+    for arrow in arrow_group:
+        arrow.draw(screen)
+    print(arrow_group)
     #event handler
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
