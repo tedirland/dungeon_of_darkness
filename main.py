@@ -1,7 +1,7 @@
 """Main Module where the game is initialized and run"""
 from typing import Any
 import pygame
-from constants import RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, WEAPON_SCALE
+from constants import ITEM_SCALE, PANEL, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, WEAPON_SCALE, WHITE
 from character import Character
 from weapon import Weapon
 
@@ -27,6 +27,11 @@ def scale_img(image, scale):
     h = image.get_height()
     return pygame.transform.scale(image, (w*scale, h*scale))
 
+# load heart images
+heart_empty = scale_img(pygame.image.load("assets/images/items/heart_empty.png").convert_alpha(), ITEM_SCALE)
+heart_half = scale_img(pygame.image.load("assets/images/items/heart_half.png").convert_alpha(), ITEM_SCALE)
+heart_full = scale_img(pygame.image.load("assets/images/items/heart_full.png").convert_alpha(), ITEM_SCALE)
+
 # load weapon images
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
 arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), WEAPON_SCALE)
@@ -48,6 +53,24 @@ for mob in mob_types:
         animation_list.append(temp_list)
     mob_animations.append(animation_list)
 
+# function for displaying game info
+def draw_info():
+    
+    pygame.draw.rect(screen,PANEL, (0,0,SCREEN_WIDTH, 50))
+    pygame.draw.line(screen,WHITE, (0,50), (SCREEN_WIDTH, 50))
+    # draw lives
+    half_heart_drawn = False
+    for i in range(5):
+        if player.health >= ((i+1) *20):
+            screen.blit(heart_full, (10+ i *50, 0 ))
+        elif player.health % 20 > 0 and half_heart_drawn is False:
+             screen.blit(heart_half, (10+ i *50, 0 ))
+             half_heart_drawn = True
+        else:
+             screen.blit(heart_empty, (10+ i *50, 0 ))
+
+
+
 #damage text class
 class DamageText(pygame.sprite.Sprite):
     def __init__(self,x,y,damage, color) -> None:
@@ -67,7 +90,7 @@ class DamageText(pygame.sprite.Sprite):
 
 
 # create player
-player = Character(100,100,100, mob_animations, 0)
+player = Character(100,100,10, mob_animations, 0)
 
 # create enemy
 enemy = Character(200,300,100, mob_animations,2)
@@ -129,6 +152,7 @@ while run:
     for arrow in arrow_group:
         arrow.draw(screen)
     damage_text_group.draw(screen)
+    draw_info()
 
     #event handler
     for event in pygame.event.get():
