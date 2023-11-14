@@ -69,6 +69,7 @@ class Character():
         self.flip = False
         self.animation_list = mob_animations[char_type]
         self.frame_index = 0
+        self.coins = 0
         self.action = 0 #0: idle, 1:run
         self.update_time = pygame.time.get_ticks()
         self.running = False
