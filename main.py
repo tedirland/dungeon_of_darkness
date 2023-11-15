@@ -1,7 +1,7 @@
 """Main Module where the game is initialized and run"""
 from typing import Any
 import pygame
-from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, WEAPON_SCALE, WHITE
+from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, WEAPON_SCALE, WHITE
 from character import Character
 from items import Item
 from weapon import Weapon
@@ -66,6 +66,13 @@ for mob in mob_types:
 def draw_text(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img,(x,y))
+
+def draw_grid():
+    for x in range(30):
+        pygame.draw.line(screen, WHITE, (x * TILE_SIZE,0), (x *TILE_SIZE, SCREEN_HEIGHT))
+        pygame.draw.line(screen, WHITE, (0, x * TILE_SIZE), (SCREEN_WIDTH,x *TILE_SIZE))
+           
+
 
 # function for displaying game info
 def draw_info():
@@ -142,6 +149,8 @@ while run:
     clock.tick(FPS)
 
     screen.fill(BG)
+
+    draw_grid()
     # calculate player movement
     dx = 0
     dy = 0
