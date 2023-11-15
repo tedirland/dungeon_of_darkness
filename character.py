@@ -1,7 +1,7 @@
 """Character class and assorted methods"""
 import math
 import pygame
-from constants import OFFSET, RED, SCALE
+from constants import OFFSET, RED, SCALE, TILE_SIZE
 
 class Character():
     """
@@ -77,7 +77,7 @@ class Character():
         self.alive = True
         
         self.image = self.animation_list[self.action][self.frame_index]
-        self.rect = pygame.Rect(0,0,40,40)
+        self.rect = pygame.Rect(0,0,TILE_SIZE, TILE_SIZE)
         self.rect.center = (x,y)
     
     

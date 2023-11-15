@@ -67,6 +67,14 @@ def draw_text(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img,(x,y))
 
+world_data = [
+    [7,7,7,7,7],
+    [7,0,1,2,7],
+    [7,3,4,5,7],
+    [7,6,6,6,7],
+    [7,7,7,7,7],
+]
+
 def draw_grid():
     for x in range(30):
         pygame.draw.line(screen, WHITE, (x * TILE_SIZE,0), (x *TILE_SIZE, SCREEN_HEIGHT))
