@@ -1,10 +1,11 @@
 """Main Module where the game is initialized and run"""
 from typing import Any
 import pygame
-from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, WEAPON_SCALE, WHITE
+from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, TILE_TYPES, WEAPON_SCALE, WHITE
 from character import Character
 from items import Item
 from weapon import Weapon
+from world import World
 
 pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -44,6 +45,13 @@ red_potion = scale_img(pygame.image.load("assets/images/items/potion_red.png").c
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
 arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), WEAPON_SCALE)
 
+# load tile map images
+tile_list = []
+
+for x in range(TILE_TYPES):
+    tile_img = pygame.image.load(f"assets/images/tiles/{x}.png").convert_alpha()
+    tile_img = pygame.transform.scale(tile_img, (TILE_SIZE, TILE_SIZE))
+    tile_list.append(tile_img)
 
 # load character images
 mob_animations = []
@@ -68,17 +76,19 @@ def draw_text(text, font, text_col, x,y):
     screen.blit(img,(x,y))
 
 world_data = [
-    [7,7,7,7,7],
-    [7,0,1,2,7],
-    [7,3,4,5,7],
-    [7,6,6,6,7],
-    [7,7,7,7,7],
+    [7,7,7,7,7,0,7],
+    [7,0,1,2,3,2,7],
+    [7,3,4,5,3,5,7],
+    [7,6,6,6,1,2,7],
+    [7,7,0,7,7,7,7],
 ]
+# init World class
+world = World()
+world.process_data(world_data,tile_list)
 
-def draw_grid():
-    for x in range(30):
-        pygame.draw.line(screen, WHITE, (x * TILE_SIZE,0), (x *TILE_SIZE, SCREEN_HEIGHT))
-        pygame.draw.line(screen, WHITE, (0, x * TILE_SIZE), (SCREEN_WIDTH,x *TILE_SIZE))
+print(world.map_tiles)
+
+
            
 
 
@@ -158,7 +168,7 @@ while run:
 
     screen.fill(BG)
 
-    draw_grid()
+
     # calculate player movement
     dx = 0
     dy = 0
@@ -190,11 +200,18 @@ while run:
     damage_text_group.update()
     item_group.update(player)
     
-    # draw sprites
-    player.draw(screen)
-    bow.draw(screen)
+    ###### draw sprites ######
+
+    # draw world
+    world.draw(screen)
+    # draw enemies
     for enemy in enemy_list:
         enemy.draw(screen)
+    # draw player
+    player.draw(screen)
+    # draw weapon
+    bow.draw(screen)
+    # draw arrows
     for arrow in arrow_group:
         arrow.draw(screen)
     damage_text_group.draw(screen)

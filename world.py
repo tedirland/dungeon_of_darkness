@@ -22,4 +22,4 @@ class World():
                     self.map_tiles.append(tile_data)
     def draw(self, surface):
         for tile in self.map_tiles:
-            surface.bilt(tile[0], tile[1])
+            surface.blit(tile[0], tile[1])
