@@ -86,7 +86,6 @@ world_data = [
 world = World()
 world.process_data(world_data,tile_list)
 
-print(world.map_tiles)
 
 
            
@@ -156,7 +155,6 @@ potion = Item(200,200, 1, [red_potion])
 item_group.add(potion)
 coin = Item(400,400, 0,coin_images)
 item_group.add(coin)
-print(item_group)
 
 
 # main game loop
