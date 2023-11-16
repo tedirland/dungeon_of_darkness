@@ -1,7 +1,7 @@
 """Main Module where the game is initialized and run"""
-from typing import Any
+import csv
 import pygame
-from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, TILE_TYPES, WEAPON_SCALE, WHITE
+from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, ROWS, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, TILE_TYPES, WEAPON_SCALE, WHITE, COLS
 from character import Character
 from items import Item
 from weapon import Weapon
@@ -13,6 +13,9 @@ pygame.display.set_caption("Dungeon of Darkness")
 
 # create clock for maintaining frame rate
 clock = pygame.time.Clock()
+
+# define game variables
+level = 1
 
 # define player movement vars
 moving_left = False
@@ -75,21 +78,23 @@ def draw_text(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img,(x,y))
 
-world_data = [
-    [7,7,7,7,7,0,7],
-    [7,0,1,2,3,2,7],
-    [7,3,4,5,3,5,7],
-    [7,6,6,6,1,2,7],
-    [7,7,0,7,7,7,7],
-]
+# create empty tile list
+world_data = []
+for row in range(ROWS):
+    r = [-1] * COLS
+    world_data.append(r)
+# load in level data and create world
+
+with open(f"levels/level{level}_data.csv", newline="") as csvfile:
+    reader = csv.reader(csvfile, delimiter=",")
+    for x,row in enumerate(reader):
+        for y,tile in enumerate(row):
+            world_data[x][y] = int(tile)
+
+
 # init World class
 world = World()
 world.process_data(world_data,tile_list)
-
-
-
-           
-
 
 # function for displaying game info
 def draw_info():
