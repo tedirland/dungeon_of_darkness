@@ -191,7 +191,6 @@ while run:
 
     # move player
     screen_scroll = player.move(dx,dy)
-    print(screen_scroll)
 
     # update all objects
     world.update(screen_scroll)
