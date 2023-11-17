@@ -2,7 +2,7 @@
 import math
 from tkinter import SCROLL
 import pygame
-from constants import OFFSET, RED, SCALE, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
+from constants import OFFSET, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
 class Character():
     """
@@ -110,8 +110,15 @@ class Character():
                 screen_scroll[0] =  (SCREEN_WIDTH - SCROLL_THRESH) - self.rect.right
                 self.rect.right = SCREEN_WIDTH - SCROLL_THRESH
             if self.rect.left <  SCROLL_THRESH:
-                screen_scroll[0] = SCROLL_THRESH - self.rect.right
+                screen_scroll[0] = SCROLL_THRESH - self.rect.left
                 self.rect.left = SCROLL_THRESH
+                # move camera up and down
+            if self.rect.bottom > (SCREEN_HEIGHT - SCROLL_THRESH):
+                screen_scroll[1] =  (SCREEN_HEIGHT - SCROLL_THRESH) - self.rect.bottom
+                self.rect.bottom = SCREEN_HEIGHT - SCROLL_THRESH
+            if self.rect.top <  SCROLL_THRESH:
+                screen_scroll[1] = SCROLL_THRESH - self.rect.top
+                self.rect.top = SCROLL_THRESH
         return screen_scroll
 
 
