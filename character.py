@@ -4,7 +4,7 @@ from tkinter import SCROLL
 import pygame
 from constants import OFFSET, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
-class Character():
+class Character(pygame.sprite.Sprite):
     """
         A class to represent a game character with animations and movement capabilities.
 
@@ -66,6 +66,7 @@ class Character():
         None
         """
     def __init__(self,x, y, health, mob_animations, char_type):
+        pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
         self.flip = False
         self.animation_list = mob_animations[char_type]
