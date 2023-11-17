@@ -1,7 +1,8 @@
 """Character class and assorted methods"""
 import math
+from tkinter import SCROLL
 import pygame
-from constants import OFFSET, RED, SCALE, TILE_SIZE
+from constants import OFFSET, RED, SCALE, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
 class Character():
     """
@@ -85,6 +86,7 @@ class Character():
         """Move is a method on the Character class.
         It takes in an two integers (`dx` and `dy`) that represent the speed the character is travelling along the x or y vectors. It toggles the animation between running and idle and flips the sprite if travelling in a negative vector on the x axis.
         Ultimately, the x and y coordinates are incremented by the provided dx and dy values"""
+        screen_scroll = [0,0]
         self.running = False
         if dx != 0 or dy != 0:
             self.running = True
@@ -98,6 +100,21 @@ class Character():
 
         self.rect.x += dx
         self.rect.y += dy
+
+        # only apply to player
+        if self.char_type == 0:
+
+            # update scroll based on player position
+            # move camera left and right
+            if self.rect.right > (SCREEN_WIDTH - SCROLL_THRESH):
+                screen_scroll[0] =  (SCREEN_WIDTH - SCROLL_THRESH) - self.rect.right
+                self.rect.right = SCREEN_WIDTH - SCROLL_THRESH
+            if self.rect.left <  SCROLL_THRESH:
+                screen_scroll[0] = SCROLL_THRESH - self.rect.right
+                self.rect.left = SCROLL_THRESH
+        return screen_scroll
+
+
 
     def update(self):
         """

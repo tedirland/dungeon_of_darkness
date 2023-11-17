@@ -16,6 +16,7 @@ clock = pygame.time.Clock()
 
 # define game variables
 level = 1
+screen_scroll = [0,0]
 
 # define player movement vars
 moving_left = False
@@ -136,7 +137,7 @@ class DamageText(pygame.sprite.Sprite):
 
 
 # create player
-player = Character(100,100,100, mob_animations, 0)
+player = Character(400,300,100, mob_animations, 0)
 
 # create enemy
 enemy = Character(200,300,100, mob_animations,2)
@@ -186,7 +187,8 @@ while run:
     
 
     # move player
-    player.move(dx,dy)
+    screen_scroll = player.move(dx,dy)
+    print(screen_scroll)
 
     # update player
     for enemy in enemy_list:
