@@ -154,7 +154,7 @@ damage_text_group = pygame.sprite.Group()
 arrow_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
-score_coin = Item(SCREEN_WIDTH-115,23,0,coin_images)
+score_coin = Item(SCREEN_WIDTH-115,23,0,coin_images, dummy_coin=True)
 item_group.add(score_coin)
 
 potion = Item(200,200, 1, [red_potion])
