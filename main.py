@@ -127,6 +127,9 @@ class DamageText(pygame.sprite.Sprite):
         self.rect.center = (x,y)
         self.counter = 0
     def update(self) -> None:
+        # reposition text based on screen scroll
+        self.rect.x += screen_scroll[0]
+        self.rect.y += screen_scroll[1]
         # move damage text up
         self.rect.y -= 1
         # delete the counter after a few seconds
@@ -140,7 +143,7 @@ class DamageText(pygame.sprite.Sprite):
 player = Character(400,300,100, mob_animations, 0)
 
 # create enemy
-enemy = Character(200,300,100, mob_animations,2)
+enemy = Character(300,300,100, mob_animations,2)
 
 # create weapon
 bow = Weapon(bow_image, arrow_image)
@@ -193,6 +196,7 @@ while run:
     # update all objects
     world.update(screen_scroll)
     for enemy in enemy_list:
+        enemy.ai(screen_scroll)
         enemy.update()
     player.update()
     arrow = bow.update(player)

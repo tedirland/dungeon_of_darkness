@@ -122,6 +122,12 @@ class Character():
         return screen_scroll
 
 
+    def ai(self, screen_scroll):
+
+        # reposition mob based on screen scroll
+        self.rect.x += screen_scroll[0]
+        self.rect.y += screen_scroll[1]
+
 
     def update(self):
         """
