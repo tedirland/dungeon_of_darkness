@@ -74,7 +74,7 @@ for mob in mob_types:
     mob_animations.append(animation_list)
 
 
-# function to output text to scree
+# function to output text to screen
 def draw_text(text, font, text_col, x,y):
     img = font.render(text, True, text_col)
     screen.blit(img,(x,y))
@@ -113,6 +113,7 @@ def draw_info():
              screen.blit(heart_empty, (10+ i *50, 0 ))
     # show score
     draw_text(f"X{player.coins}", font,WHITE,SCREEN_WIDTH-100,15)
+    draw_text(f"Level {level}", font,WHITE,SCREEN_WIDTH-400,15)
 
 
 
