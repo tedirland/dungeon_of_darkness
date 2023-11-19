@@ -45,6 +45,11 @@ for x in range(4):
     coin_images.append(img)
 # load potion image
 red_potion = scale_img(pygame.image.load("assets/images/items/potion_red.png").convert_alpha(), POTION_SCALE)
+
+item_images = []
+
+item_images.append(coin_images)
+item_images.append(red_potion)
 # load weapon images
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
 arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), WEAPON_SCALE)
@@ -95,7 +100,7 @@ with open(f"levels/level{level}_data.csv", newline="") as csvfile:
 
 # init World class
 world = World()
-world.process_data(world_data,tile_list)
+world.process_data(world_data,tile_list, item_images)
 
 # function for displaying game info
 def draw_info():
@@ -160,12 +165,14 @@ arrow_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
 
 score_coin = Item(SCREEN_WIDTH-115,23,0,coin_images, dummy_coin=True)
+# add items from the level data
+for item in world.item_list:
+    item_group.add(item)
 item_group.add(score_coin)
+# 
 
 potion = Item(200,200, 1, [red_potion])
 item_group.add(potion)
-coin = Item(400,400, 0,coin_images)
-item_group.add(coin)
 
 
 # main game loop

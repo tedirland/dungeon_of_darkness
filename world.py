@@ -1,3 +1,4 @@
+from items import Item
 from constants import TILE_SIZE
 
 
@@ -6,8 +7,9 @@ class World():
         self.map_tiles = []
         self.obstacles_tiles = []
         self.exit_tile = None
+        self.item_list = []
 
-    def process_data(self, data, tile_list):
+    def process_data(self, data, tile_list, item_images):
         self.level_length = len(data)
         # iterate through each value in level data
         for y,row in enumerate(data):
@@ -23,7 +25,14 @@ class World():
                 if tile == 7:
                     self.obstacles_tiles.append(tile_data)
                 # draw exit tile
+                elif tile == 7:
+                    self.exit_tile = tile_data
+                if tile == 9:
+                    coin = Item(image_x, image_y,0, item_images[0])
+                    self.item_list.append(coin)
+                    tile_data[0] = tile_list[0]
                 
+
 
 
                 
