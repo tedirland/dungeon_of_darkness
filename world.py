@@ -27,9 +27,13 @@ class World():
                 # draw exit tile
                 elif tile == 7:
                     self.exit_tile = tile_data
-                if tile == 9:
+                elif tile == 9:
                     coin = Item(image_x, image_y,0, item_images[0])
                     self.item_list.append(coin)
+                    tile_data[0] = tile_list[0]
+                elif tile == 10:
+                    potion = Item(image_x, image_y,1, [item_images[1]])
+                    self.item_list.append(potion)
                     tile_data[0] = tile_list[0]
                 
 
