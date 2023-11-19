@@ -169,11 +169,6 @@ score_coin = Item(SCREEN_WIDTH-115,23,0,coin_images, dummy_coin=True)
 for item in world.item_list:
     item_group.add(item)
 item_group.add(score_coin)
-# 
-
-potion = Item(200,200, 1, [red_potion])
-item_group.add(potion)
-
 
 # main game loop
 run = True
