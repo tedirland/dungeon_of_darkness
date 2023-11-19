@@ -111,9 +111,10 @@ def draw_info():
              half_heart_drawn = True
         else:
              screen.blit(heart_empty, (10+ i *50, 0 ))
+    # draw level
+    draw_text(f"Level {str(level)}", font,WHITE,SCREEN_WIDTH /2,15)
     # show score
     draw_text(f"X{player.coins}", font,WHITE,SCREEN_WIDTH-100,15)
-    draw_text(f"Level {level}", font,WHITE,SCREEN_WIDTH-400,15)
 
 
 

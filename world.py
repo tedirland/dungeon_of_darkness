@@ -4,6 +4,8 @@ from constants import TILE_SIZE
 class World():
     def __init__(self) -> None:
         self.map_tiles = []
+        self.obstacles_tiles = []
+        self.exit_tile = None
 
     def process_data(self, data, tile_list):
         self.level_length = len(data)
@@ -16,6 +18,14 @@ class World():
                 image_y = y * TILE_SIZE
                 image_rect.center = (image_x, image_y)
                 tile_data = [image, image_rect, image_x, image_y]
+
+                # draw walls/obstacles
+                if tile == 7:
+                    self.obstacles_tiles.append(tile_data)
+                # draw exit tile
+                
+
+
                 
                 # add image data to main tiles list
                 if tile >= 0:
