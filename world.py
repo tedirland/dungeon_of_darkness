@@ -1,3 +1,4 @@
+from character import Character
 from items import Item
 from constants import TILE_SIZE
 
@@ -8,8 +9,10 @@ class World():
         self.obstacles_tiles = []
         self.exit_tile = None
         self.item_list = []
+        self.player = None
+        self.enemy_list = []
 
-    def process_data(self, data, tile_list, item_images):
+    def process_data(self, data, tile_list, item_images, mob_animations):
         self.level_length = len(data)
         # iterate through each value in level data
         for y,row in enumerate(data):
@@ -35,6 +38,35 @@ class World():
                     potion = Item(image_x, image_y,1, [item_images[1]])
                     self.item_list.append(potion)
                     tile_data[0] = tile_list[0]
+                elif tile == 11:
+                    player = Character(image_x,image_y,100, mob_animations, 0)
+                    self.player = player
+                    tile_data[0] = tile_list[0]
+                elif tile == 12:
+                    enemy = Character(image_x,image_y,100, mob_animations, 1)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                elif tile == 13:
+                    enemy = Character(image_x,image_y,100, mob_animations, 2)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                elif tile == 14:
+                    enemy = Character(image_x,image_y,100, mob_animations, 3)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                elif tile == 15:
+                    enemy = Character(image_x,image_y,100, mob_animations, 4)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                elif tile == 16:
+                    enemy = Character(image_x,image_y,100, mob_animations, 5)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                elif tile == 17:
+                    enemy = Character(image_x,image_y,100, mob_animations, 6)
+                    self.enemy_list.append(enemy)
+                    tile_data[0] = tile_list[0]
+                
                 
 
 

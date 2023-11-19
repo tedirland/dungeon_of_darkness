@@ -100,7 +100,7 @@ with open(f"levels/level{level}_data.csv", newline="") as csvfile:
 
 # init World class
 world = World()
-world.process_data(world_data,tile_list, item_images)
+world.process_data(world_data,tile_list, item_images, mob_animations)
 
 # function for displaying game info
 def draw_info():
@@ -147,17 +147,13 @@ class DamageText(pygame.sprite.Sprite):
 
 
 # create player
-player = Character(400,300,100, mob_animations, 0)
-
-# create enemy
-enemy = Character(300,300,100, mob_animations,2)
-
+player = world.player
 # create weapon
 bow = Weapon(bow_image, arrow_image)
 
-# create empty emeny list
-enemy_list = []
-enemy_list.append(enemy)
+# extract enemies
+enemy_list = world.enemy_list
+
 
 # create sprite groups
 damage_text_group = pygame.sprite.Group()
