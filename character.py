@@ -65,9 +65,10 @@ class Character(pygame.sprite.Sprite):
         -------
         None
         """
-    def __init__(self,x, y, health, mob_animations, char_type):
+    def __init__(self,x, y, health, mob_animations, char_type, boss, size):
         pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
+        self. boss = boss
         self.flip = False
         self.animation_list = mob_animations[char_type]
         self.frame_index = 0
@@ -79,7 +80,7 @@ class Character(pygame.sprite.Sprite):
         self.alive = True
         
         self.image = self.animation_list[self.action][self.frame_index]
-        self.rect = pygame.Rect(0,0,TILE_SIZE, TILE_SIZE)
+        self.rect = pygame.Rect(0,0,TILE_SIZE * size, TILE_SIZE * size)
         self.rect.center = (x,y)
     
     
