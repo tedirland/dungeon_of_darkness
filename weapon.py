@@ -1,6 +1,7 @@
 import random
 import math
 import pygame
+from sympy import true
 
 from constants import ARROW_SPEED, FIREBALL_SPEED, SCREEN_HEIGHT, SCREEN_WIDTH
 class Weapon():
@@ -109,11 +110,11 @@ class Fireball(pygame.sprite.Sprite):
         # check if fireball has gone off screen
         if self.rect.right < 0 or self.rect.left > SCREEN_WIDTH or self.rect.bottom <0 or self.rect.top > SCREEN_HEIGHT:
             self.kill()
-        # check collision between player and arrows
-       
+        # check collision between player and fireballs
         if player.rect.colliderect(self.rect) and player.alive:
-            damage = 10 + random.randint(-5,5)
-            player.health -= damage
+            player.hit = true
+            player.last_hit = pygame.time.get_ticks()
+            player.health -= 10
             self.kill()
             
                 

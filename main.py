@@ -15,7 +15,7 @@ pygame.display.set_caption("Dungeon of Darkness")
 clock = pygame.time.Clock()
 
 # define game variables
-level = 3
+level = 1
 screen_scroll = [0,0]
 
 # define player movement vars
@@ -160,6 +160,7 @@ enemy_list = world.enemy_list
 damage_text_group = pygame.sprite.Group()
 arrow_group = pygame.sprite.Group()
 item_group = pygame.sprite.Group()
+fireball_group = pygame.sprite.Group()
 
 score_coin = Item(SCREEN_WIDTH-115,23,0,coin_images, dummy_coin=True)
 # add items from the level data
@@ -198,7 +199,7 @@ while run:
     for enemy in enemy_list:
         fireball = enemy.ai(player, world.obstacles_tiles,screen_scroll, fireball_image)
         if fireball:
-            print(fireball)
+            fireball_group.add(fireball)
         if enemy.alive:
             enemy.update()
     player.update()
@@ -211,6 +212,7 @@ while run:
             damage_text = DamageText(damage_pos.centerx, damage_pos.y, str(damage), RED)
             damage_text_group.add(damage_text)
     damage_text_group.update()
+    fireball_group.update(screen_scroll,player)
     item_group.update(screen_scroll,player)
     
     ###### draw sprites ######
@@ -227,6 +229,8 @@ while run:
     # draw arrows
     for arrow in arrow_group:
         arrow.draw(screen)
+    for fireball in fireball_group:
+        fireball.draw(screen)
     damage_text_group.draw(screen)
     item_group.draw(screen)
     draw_info()
