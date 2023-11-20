@@ -2,7 +2,7 @@
 import math
 from tkinter import SCROLL
 import pygame
-from constants import ENEMY_SPEED, OFFSET, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
+from constants import ENEMY_SPEED, OFFSET, RANGE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
 class Character(pygame.sprite.Sprite):
     """
@@ -151,14 +151,19 @@ class Character(pygame.sprite.Sprite):
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
 
-        if self.rect.centerx > player.rect.centerx:
-            ai_dx = -ENEMY_SPEED
-        if self.rect.centerx < player.rect.centerx:
-            ai_dx = ENEMY_SPEED
-        if self.rect.centery > player.rect.centery:
-            ai_dy = -ENEMY_SPEED
-        if self.rect.centery < player.rect.centery:
-            ai_dy = ENEMY_SPEED
+        #check distance to player
+        dist = math.sqrt(((self.rect.centerx - player.rect.centerx)** 2) + ((self.rect.centery - player.rect.centery) **2))
+
+        if dist > RANGE:
+
+            if self.rect.centerx > player.rect.centerx:
+                ai_dx = -ENEMY_SPEED
+            if self.rect.centerx < player.rect.centerx:
+                ai_dx = ENEMY_SPEED
+            if self.rect.centery > player.rect.centery:
+                ai_dy = -ENEMY_SPEED
+            if self.rect.centery < player.rect.centery:
+                ai_dy = ENEMY_SPEED
 
         self.move(ai_dx, ai_dy,obstacle_tiles)
 
