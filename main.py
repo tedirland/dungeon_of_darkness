@@ -1,7 +1,7 @@
 """Main Module where the game is initialized and run"""
 import csv
 import pygame
-from constants import ITEM_SCALE, PANEL, POTION_SCALE, RED, ROWS, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, TILE_TYPES, WEAPON_SCALE, WHITE, COLS
+from constants import FIREBALL_SCALE, ITEM_SCALE, PANEL, POTION_SCALE, RED, ROWS, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, BG, FPS, PLAYER_SPEED, TILE_SIZE, TILE_TYPES, WEAPON_SCALE, WHITE, COLS
 from character import Character
 from items import Item
 from weapon import Weapon
@@ -15,7 +15,7 @@ pygame.display.set_caption("Dungeon of Darkness")
 clock = pygame.time.Clock()
 
 # define game variables
-level = 1
+level = 3
 screen_scroll = [0,0]
 
 # define player movement vars
@@ -53,6 +53,7 @@ item_images.append(red_potion)
 # load weapon images
 bow_image = scale_img(pygame.image.load("assets/images/weapons/bow.png").convert_alpha(), WEAPON_SCALE)
 arrow_image = scale_img(pygame.image.load("assets/images/weapons/arrow.png").convert_alpha(), WEAPON_SCALE)
+fireball_image = scale_img(pygame.image.load("assets/images/weapons/fireball.png").convert_alpha(), FIREBALL_SCALE)
 
 # load tile map images
 tile_list = []
@@ -195,8 +196,11 @@ while run:
     # update all objects
     world.update(screen_scroll)
     for enemy in enemy_list:
-        enemy.ai(player, world.obstacles_tiles,screen_scroll)
-        enemy.update()
+        fireball = enemy.ai(player, world.obstacles_tiles,screen_scroll, fireball_image)
+        if fireball:
+            print(fireball)
+        if enemy.alive:
+            enemy.update()
     player.update()
     arrow = bow.update(player)
     if arrow:

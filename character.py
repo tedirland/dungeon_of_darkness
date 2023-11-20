@@ -1,6 +1,7 @@
 """Character class and assorted methods"""
 import math
 import pygame
+from weapon import Fireball
 from constants import ATTACK_RANGE, ENEMY_SPEED, OFFSET, RANGE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
 class Character():
@@ -78,6 +79,7 @@ class Character():
         self.alive = True
         self.hit = False
         self.last_hit = pygame.time.get_ticks()
+        self.last_attack = pygame.time.get_ticks()
         self.stunned = False
         
         self.image = self.animation_list[self.action][self.frame_index]
@@ -144,11 +146,12 @@ class Character():
         return screen_scroll
 
 
-    def ai(self,player, obstacle_tiles, screen_scroll):
+    def ai(self,player, obstacle_tiles, screen_scroll, fireball_image):
         clipped_line = ()
         stun_cooldown = 100
         ai_dx = 0
         ai_dy = 0
+        fireball = None
         # reposition mob based on screen scroll
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
@@ -183,6 +186,14 @@ class Character():
                 if dist < ATTACK_RANGE and player.hit == False:
                     player.health -= 10
                     player.hit = True
+                    player.last_hit = pygame.time.get_ticks()
+                # boss enemies shoot fireballs
+                fireball_cooldown = 700
+                if self.boss:
+                    if dist < 500:
+                        if pygame.time.get_ticks() - self.last_attack >= fireball_cooldown:
+                            fireball = Fireball(fireball_image, self.rect.centerx, self.rect.centery, player.rect.centerx, player.rect.centery)
+                            self.last_attack = pygame.time.get_ticks()
             
             # check if hit
             if self.hit:
@@ -191,8 +202,10 @@ class Character():
                 self.stunned = True
                 self.running = False
                 self.update_action(0)
+
             if (pygame.time.get_ticks() - self.last_hit > stun_cooldown):
                 self.stunned = False
+        return fireball
 
 
     def update(self):
@@ -333,5 +346,5 @@ class Character():
         
         else:
             surface.blit(flipped_image, self.rect)
-        pygame.draw.rect(surface,RED, self.rect, 1)
+    
     
