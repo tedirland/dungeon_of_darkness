@@ -2,7 +2,7 @@
 import math
 from tkinter import SCROLL
 import pygame
-from constants import OFFSET, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
+from constants import ENEMY_SPEED, OFFSET, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
 class Character(pygame.sprite.Sprite):
     """
@@ -143,11 +143,24 @@ class Character(pygame.sprite.Sprite):
         return screen_scroll
 
 
-    def ai(self, screen_scroll):
+    def ai(self,player, obstacle_tiles, screen_scroll):
 
+        ai_dx = 0
+        ai_dy = 0
         # reposition mob based on screen scroll
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
+
+        if self.rect.centerx > player.rect.centerx:
+            ai_dx = -ENEMY_SPEED
+        if self.rect.centerx < player.rect.centerx:
+            ai_dx = ENEMY_SPEED
+        if self.rect.centery > player.rect.centery:
+            ai_dy = -ENEMY_SPEED
+        if self.rect.centery < player.rect.centery:
+            ai_dy = ENEMY_SPEED
+
+        self.move(ai_dx, ai_dy,obstacle_tiles)
 
 
     def update(self):

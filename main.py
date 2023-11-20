@@ -15,7 +15,7 @@ pygame.display.set_caption("Dungeon of Darkness")
 clock = pygame.time.Clock()
 
 # define game variables
-level = 3
+level = 1
 screen_scroll = [0,0]
 
 # define player movement vars
@@ -195,7 +195,7 @@ while run:
     # update all objects
     world.update(screen_scroll)
     for enemy in enemy_list:
-        enemy.ai(screen_scroll)
+        enemy.ai(player, world.obstacles_tiles,screen_scroll)
         enemy.update()
     player.update()
     arrow = bow.update(player)
