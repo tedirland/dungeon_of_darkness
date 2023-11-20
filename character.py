@@ -84,7 +84,7 @@ class Character(pygame.sprite.Sprite):
         self.rect.center = (x,y)
     
     
-    def move(self, dx, dy ):
+    def move(self, dx, dy, obstacle_tiles):
         """Move is a method on the Character class.
         It takes in an two integers (`dx` and `dy`) that represent the speed the character is travelling along the x or y vectors. It toggles the animation between running and idle and flips the sprite if travelling in a negative vector on the x axis.
         Ultimately, the x and y coordinates are incremented by the provided dx and dy values"""
@@ -100,8 +100,27 @@ class Character(pygame.sprite.Sprite):
             dx = dx * (math.sqrt(2) /2)
             dy = dy *(math.sqrt(2) /2)
 
+        # check for collision with map in x direction
         self.rect.x += dx
+        for obstacle in obstacle_tiles:
+            # check for collisions
+            if obstacle[1].colliderect(self.rect):
+                #check which direction the player was moving
+                if dx > 0:
+                    self.rect.right = obstacle[1].left
+                if dx < 0:
+                    self.rect.left = obstacle[1].right
+
         self.rect.y += dy
+        for obstacle in obstacle_tiles:
+           # check for collisions
+            if obstacle[1].colliderect(self.rect):
+                #check which direction the player was moving
+                if dy > 0:
+                    self.rect.bottom = obstacle[1].top
+                if dy < 0:
+                    self.rect.top = obstacle[1].bottom
+        
 
         # only apply to player
         if self.char_type == 0:
