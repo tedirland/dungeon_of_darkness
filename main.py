@@ -202,7 +202,7 @@ while run:
     if arrow:
         arrow_group.add(arrow)
     for arrow in arrow_group: 
-        damage, damage_pos =arrow.update(screen_scroll,enemy_list)
+        damage, damage_pos =arrow.update(screen_scroll, world.obstacles_tiles,enemy_list)
         if damage:
             damage_text = DamageText(damage_pos.centerx, damage_pos.y, str(damage), RED)
             damage_text_group.add(damage_text)

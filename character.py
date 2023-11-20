@@ -1,10 +1,9 @@
 """Character class and assorted methods"""
 import math
-from tkinter import SCROLL
 import pygame
-from constants import ENEMY_SPEED, OFFSET, RANGE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
+from constants import ATTACK_RANGE, ENEMY_SPEED, OFFSET, RANGE, RED, SCALE, SCREEN_HEIGHT, SCREEN_WIDTH, SCROLL_THRESH, TILE_SIZE
 
-class Character(pygame.sprite.Sprite):
+class Character():
     """
         A class to represent a game character with animations and movement capabilities.
 
@@ -66,7 +65,6 @@ class Character(pygame.sprite.Sprite):
         None
         """
     def __init__(self,x, y, health, mob_animations, char_type, boss, size):
-        pygame.sprite.Sprite.__init__(self)
         self.char_type = char_type
         self. boss = boss
         self.flip = False
@@ -78,6 +76,9 @@ class Character(pygame.sprite.Sprite):
         self.running = False
         self.health = health
         self.alive = True
+        self.hit = False
+        self.last_hit = pygame.time.get_ticks()
+        self.stunned = False
         
         self.image = self.animation_list[self.action][self.frame_index]
         self.rect = pygame.Rect(0,0,TILE_SIZE * size, TILE_SIZE * size)
@@ -144,17 +145,27 @@ class Character(pygame.sprite.Sprite):
 
 
     def ai(self,player, obstacle_tiles, screen_scroll):
-
+        clipped_line = ()
+        stun_cooldown = 100
         ai_dx = 0
         ai_dy = 0
         # reposition mob based on screen scroll
         self.rect.x += screen_scroll[0]
         self.rect.y += screen_scroll[1]
 
+        # create los to player
+        line_of_sight = ((self.rect.centerx,self.rect.centery), (player.rect.centerx,player.rect.centery))
+        # check if los passes through an obstacle tile
+        for obstacle in obstacle_tiles:
+            if obstacle[1].clipline(line_of_sight):
+                clipped_line = obstacle[1].clipline(line_of_sight)
+        
+
+
         #check distance to player
         dist = math.sqrt(((self.rect.centerx - player.rect.centerx)** 2) + ((self.rect.centery - player.rect.centery) **2))
 
-        if dist > RANGE:
+        if not clipped_line and dist > RANGE:
 
             if self.rect.centerx > player.rect.centerx:
                 ai_dx = -ENEMY_SPEED
@@ -164,8 +175,24 @@ class Character(pygame.sprite.Sprite):
                 ai_dy = -ENEMY_SPEED
             if self.rect.centery < player.rect.centery:
                 ai_dy = ENEMY_SPEED
-
-        self.move(ai_dx, ai_dy,obstacle_tiles)
+        if self.alive:
+            if not self.stunned:
+            # move towards player
+                self.move(ai_dx, ai_dy,obstacle_tiles)
+                # attack player
+                if dist < ATTACK_RANGE and player.hit == False:
+                    player.health -= 10
+                    player.hit = True
+            
+            # check if hit
+            if self.hit:
+                self.hit = False
+                self.last_hit = pygame.time.get_ticks()
+                self.stunned = True
+                self.running = False
+                self.update_action(0)
+            if (pygame.time.get_ticks() - self.last_hit > stun_cooldown):
+                self.stunned = False
 
 
     def update(self):
@@ -208,6 +235,15 @@ class Character(pygame.sprite.Sprite):
         if self. health <= 0:
             self.health = 0
             self.alive = False
+
+        # timer to reset player taking a hit
+
+        hit_cooldown = 1000
+        if self.char_type == 0:
+            if self.hit == True and (pygame.time.get_ticks() - self.last_hit) > hit_cooldown:
+                self.hit = False
+                self.last_hit = pygame.time.get_ticks()
+
         # check what action the player is performing
         if self.running == True:
              self.update_action(1) #1: Run
