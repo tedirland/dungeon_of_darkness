@@ -40,7 +40,7 @@ class World():
           self.player = player
           tile_data[0] = tile_list[0]
         elif tile >= 12 and tile <= 16:
-          enemy = Character(image_x, image_y, 100, mob_animations, tile - 11, False, 1)
+          enemy = Character(image_x, image_y, 20, mob_animations, tile - 11, False, 1)
           self.character_list.append(enemy)
           tile_data[0] = tile_list[0]
         elif tile == 17:
