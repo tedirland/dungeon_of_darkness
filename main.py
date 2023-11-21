@@ -44,6 +44,11 @@ mixer.music.load("assets/audio/music.wav")
 mixer.music.set_volume(0.3)
 mixer.music.play(-1, 0.0, 5000)
 
+shot_fx = mixer.Sound("assets/audio/arrow_shot.mp3")
+shot_fx.set_volume(0.5)
+hit_fx = mixer.Sound("assets/audio/arrow_hit.wav")
+hit_fx.set_volume(0.5)
+
 
 # load button images
 restart_img = scale_img(pygame.image.load("assets/images/buttons/button_restart.png").convert_alpha(), constants.BUTTON_SCALE)
@@ -282,9 +287,11 @@ while run:
         arrow = bow.update(player)
         if arrow:
           arrow_group.add(arrow)
+          shot_fx.play()
         for arrow in arrow_group:
           damage, damage_pos = arrow.update(screen_scroll, world.obstacle_tiles, enemy_list)
           if damage:
+            hit_fx.play()
             damage_text = DamageText(damage_pos.centerx, damage_pos.y, str(damage), constants.RED)
             damage_text_group.add(damage_text)
         damage_text_group.update()
