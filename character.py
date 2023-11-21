@@ -129,9 +129,10 @@ class Character():
         # only apply to player
         if self.char_type == 0:
             # check if player has triggered exit tile
-           
             if exit_tile[1].colliderect(self.rect):
-                print("Exit!")
+                exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) + ((self.rect.centery - exit_tile[1].centery) ** 2))
+                if exit_dist < 20:
+                    level_complete = True
                 
 
             # update scroll based on player position
