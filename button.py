@@ -7,5 +7,13 @@ class Button():
         self.rect.topleft = (x,y)
     def draw(self, surface):
         action = False
+
+        # get mouse position
+        pos = pygame.mouse.get_pos()
+
+        # check for mouse over and clicked condition
+        if self.rect.collidepoint(pos) and pygame.mouse.get_pressed()[0]:
+            action = True
+
         surface.blit(self.img, self.rect)
         return action
