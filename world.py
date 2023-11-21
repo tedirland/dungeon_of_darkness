@@ -28,7 +28,7 @@ class World():
                 if tile == 7:
                     self.obstacles_tiles.append(tile_data)
                 # draw exit tile
-                elif tile == 7:
+                elif tile == 8:
                     self.exit_tile = tile_data
                 elif tile == 9:
                     coin = Item(image_x, image_y,0, item_images[0])

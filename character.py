@@ -87,11 +87,12 @@ class Character():
         self.rect.center = (x,y)
     
     
-    def move(self, dx, dy, obstacle_tiles):
+    def move(self, dx, dy, obstacle_tiles, exit_tile = None):
         """Move is a method on the Character class.
         It takes in an two integers (`dx` and `dy`) that represent the speed the character is travelling along the x or y vectors. It toggles the animation between running and idle and flips the sprite if travelling in a negative vector on the x axis.
         Ultimately, the x and y coordinates are incremented by the provided dx and dy values"""
         screen_scroll = [0,0]
+        level_complete = False
         self.running = False
         if dx != 0 or dy != 0:
             self.running = True
@@ -127,6 +128,11 @@ class Character():
 
         # only apply to player
         if self.char_type == 0:
+            # check if player has triggered exit tile
+           
+            if exit_tile[1].colliderect(self.rect):
+                print("Exit!")
+                
 
             # update scroll based on player position
             # move camera left and right
@@ -181,7 +187,7 @@ class Character():
         if self.alive:
             if not self.stunned:
             # move towards player
-                self.move(ai_dx, ai_dy,obstacle_tiles)
+                self.move(ai_dx, ai_dy,obstacle_tiles,)
                 # attack player
                 if dist < ATTACK_RANGE and player.hit == False:
                     player.health -= 10
