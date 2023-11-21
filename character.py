@@ -133,6 +133,7 @@ class Character():
                 exit_dist = math.sqrt(((self.rect.centerx - exit_tile[1].centerx) ** 2) + ((self.rect.centery - exit_tile[1].centery) ** 2))
                 if exit_dist < 20:
                     level_complete = True
+
                 
 
             # update scroll based on player position
@@ -150,7 +151,7 @@ class Character():
             if self.rect.top <  SCROLL_THRESH:
                 screen_scroll[1] = SCROLL_THRESH - self.rect.top
                 self.rect.top = SCROLL_THRESH
-        return screen_scroll
+        return screen_scroll, level_complete
 
 
     def ai(self,player, obstacle_tiles, screen_scroll, fireball_image):
