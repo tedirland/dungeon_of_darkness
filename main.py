@@ -48,6 +48,10 @@ shot_fx = mixer.Sound("assets/audio/arrow_shot.mp3")
 shot_fx.set_volume(0.5)
 hit_fx = mixer.Sound("assets/audio/arrow_hit.wav")
 hit_fx.set_volume(0.5)
+coin_fx = mixer.Sound("assets/audio/coin.wav")
+coin_fx.set_volume(0.5)
+heal_fx = mixer.Sound("assets/audio/heal.wav")
+heal_fx.set_volume(0.5)
 
 
 # load button images
@@ -296,7 +300,7 @@ while run:
             damage_text_group.add(damage_text)
         damage_text_group.update()
         fireball_group.update(screen_scroll, player)
-        item_group.update(screen_scroll, player)
+        item_group.update(screen_scroll, player, coin_fx, heal_fx)
 
       #draw player on screen
       world.draw(screen)
